@@ -139,6 +139,8 @@ inregistrare_utilizator() {
   else
         printf "Utilizatorul ${nume_utilizator} nu exista, il creeam!\n"
         local parola_utilizator
+        printf "Introdu parola: "
+        parola_utilizator=$(citire_silentioasa)
         printf "Reintrodu parola: "
         copie_parola=$(citire_silentioasa)
         while [[ "$parola_utilizator" != "$copie_parola" ]] do
@@ -258,7 +260,7 @@ stergere_utilizator() {
 
 utilizatori_online() {
     if [ $nr_activi -eq 0 ]; then
-        echo "Nu este niciun barbat online in acest moment din zi"
+        echo "Nu este niciun utilizator online"
     else
         echo "---*Utilizatori online*---"
         for (( i=0; i<$nr_activi; i++ )); do
