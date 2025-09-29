@@ -1,6 +1,5 @@
 #!/bin/bash
 #sudo apt install mailutils
-source activi.sh
 locatie="$(pwd)"
 toti_utilizatorii() {
         local gasit=$(sed 's/^\([^,]*,\) \([^,]*\).*/\2/' "database.csv")
