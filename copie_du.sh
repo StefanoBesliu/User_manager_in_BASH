@@ -12,12 +12,13 @@ printf "" > "provizoriu.txt"
 cd "$cale_actuala"
 find  -type f,d -exec echo {} >> "${cale_parinte}/provizoriu.txt" \;
 mapfile -t cale_fisier < "${cale_parinte}/provizoriu.txt"
+#echo "${cale_fisier[@]}"
 for (( i=1; i<${#cale_fisier[@]}; i++ )); do
         cale_fisier[i]=$( du -h "${cale_fisier[i]}" )
-        #echo "${fisier[i]}"
+        #echo "${cale_fisier[i]}"
         test=$(echo "${cale_fisier[i]}" | grep -i "^0")
         if [[ -z "$test" ]]; then
-                spatiu_ocupat[i-1]=$(echo "${cale_fisier[i]}" | sed 's/\([0-9\.]*[^ ]\{1\}\).*/\1/')
+                spatiu_ocupat[i-1]=$(echo "${cale_fisier[i]}" | sed 's/\([0-9\,]*[^ ]\).*/\1/')
                 cale_fisier[i]=$(echo "${cale_fisier[i]}" | sed 's/\([^a-zA-Z]*\)\([a-zA-Z]\{1\}\)\([^a-zA-Z0-9]*\)\([a-zA-Z0-9]*\)/\4/')
         else
                 spatiu_ocupat[i-1]="0K"
@@ -29,9 +30,10 @@ done
 rm "${cale_parinte}/provizoriu.txt"
 #echo "${cale_fisier[@]}"
 #echo "${fisier[@]}"
+#echo "${spatiu_ocupat[@]}"
 raport="raport_$1.txt"
 touch "$raport"
-echo "Directoare totale: $count_dir" > "$raport"
+echo "Directoare totale: $count_dir (inclusiv directorul parinte $1)" > "$raport"
 echo "Fisiere totale: $count_file" >> "$raport"
 echo "Pentru directorul $1, al utilizatorului $1, avem in total ${spatiu_total} ocupati:" >> "$raport"
 exista_director=0
@@ -56,7 +58,7 @@ for (( i=1; i<${#cale_fisier[@]}; i++ )); do
         fi
 done
 if [ $exista_fisier -eq 0 ]; then
-        echo "Nu exista fisiere!" >> "$raport"
+       echo "Nu exista fisiere!" >> "$raport"
 else
         echo "-------------------------------------------------------" >> "$raport"
 fi
